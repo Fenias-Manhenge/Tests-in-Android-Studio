@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Dialogs"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:id="@+id/rootNode">
+
+    <Button
+        android:id="@+id/btn_SnackBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SnackBar"
+        android:textSize="40sp"
+        android:layout_marginBottom="20dp"/>
+
+    <Button
+        android:id="@+id/btn_Dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dialog"
+        android:textSize="40sp"
+        android:layout_marginBottom="20dp"/>
+
+    <Button
+        android:id="@+id/btn_AlertDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alert Dialog"
+        android:textSize="40sp"
+        android:layout_marginBottom="20dp"/>
+
+    <Button
+        android:id="@+id/btn_progressBarDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="progress Bar Dialog"
+        android:textSize="40sp"
+        android:layout_marginBottom="20dp"/>
+</LinearLayout>

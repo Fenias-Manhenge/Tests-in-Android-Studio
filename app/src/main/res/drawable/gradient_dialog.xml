@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape android:shape="rectangle" xmlns:android="http://schemas.android.com/apk/res/android">
+    <stroke
+        android:width="5dp"
+        android:color="@color/md_theme_light_onErrorContainer"
+        />
+    <corners android:radius="10dp"/>
+    <gradient
+        android:startColor="@color/md_theme_light_error"
+        android:centerColor="@color/md_theme_dark_errorContainer"
+        android:endColor="@color/md_theme_dark_onError"
+        android:angle="10"
+        />
+</shape>
