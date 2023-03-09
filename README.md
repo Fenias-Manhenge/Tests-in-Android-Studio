@@ -1,2 +1,2 @@
-# Tests in Android Studio
- Alert, Dialogs...
+# Tests
+ Dialogs⚠, permissions, etc! 
