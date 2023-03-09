@@ -1,2 +1,2 @@
 # Tests in Android Studio
- Alert
+ Alert, Dialogs...
