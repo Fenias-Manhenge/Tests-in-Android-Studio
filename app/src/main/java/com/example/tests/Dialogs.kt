@@ -7,8 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.view.setPadding
 import com.example.tests.databinding.ActivityDialogsBinding
+import com.example.tests.databinding.CustomDialogBinding
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.snackbar.Snackbar.SnackbarLayout
+import com.google.android.material.snackbar.SnackbarContentLayout
 
 class Dialogs : AppCompatActivity() {
 
@@ -22,7 +26,12 @@ class Dialogs : AppCompatActivity() {
         binding.btnSnackBar.setOnClickListener {
             Snackbar.make(binding.rootNode, "SnackBar", Snackbar.LENGTH_INDEFINITE)
                 .setAction("Yes"){
-                    Snackbar.ANIMATION_MODE_FADE
+                    val customSnackbar = Snackbar.make(binding.rootNode, "", Snackbar.LENGTH_INDEFINITE)
+                    val layout = customSnackbar.view as SnackbarLayout
+                    val bind: CustomDialogBinding = CustomDialogBinding.inflate(layoutInflater)
+                    layout.setPadding(0)
+                    layout.addView(bind.root)
+                    customSnackbar.show()
                 }
                 .show()
         }
