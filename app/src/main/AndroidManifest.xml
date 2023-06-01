@@ -19,7 +19,10 @@
         android:theme="@style/AppTheme"
         tools:targetApi="31">
         <activity
-            android:name=".fundamentos.RecycleViewActivity"
+            android:name=".storage.Galery"
+            android:exported="false" />
+        <activity
+            android:name=".fundamentos.recycle_view.RecycleViewActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

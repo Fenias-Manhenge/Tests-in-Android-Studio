@@ -12,12 +12,10 @@ import java.io.IOException
 
 class InternalStorage : AppCompatActivity() {
 
-    private lateinit var binding: InternalStorageBinding
+    private val binding: InternalStorageBinding by lazy { InternalStorageBinding.inflate(layoutInflater) }
 
-    //private lateinit var internalStoragePhotoAdapter: InternalStoragePhotoA
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = InternalStorageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
 
