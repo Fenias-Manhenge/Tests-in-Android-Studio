@@ -20,12 +20,14 @@ class TodoAdapter(var datas: List<TodoData>): RecyclerView.Adapter<TodoAdapter.T
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
         holder.itemView.apply {
             findViewById<TextView>(R.id.tvFood).text = datas[position].foodName
-            val cbOpinion = findViewById<CheckBox>(R.id.cbOpinion)
+            findViewById<CheckBox>(R.id.cbOpinion).isChecked = datas[position].preference
+            /*
             cbOpinion.isChecked = datas[position].preference
             if (cbOpinion.isChecked){
                 cbOpinion.text = "Amazing"
             }else
                 cbOpinion.text = "Horible"
+             */
         }
     }
 

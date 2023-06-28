@@ -5,8 +5,11 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.widget.Adapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.tests.databinding.InternalStorageBinding
+import com.example.tests.fundamentos.recycle_view.GalleryAdapter
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
 
@@ -17,6 +20,7 @@ class InternalStorage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
 
 
     }
