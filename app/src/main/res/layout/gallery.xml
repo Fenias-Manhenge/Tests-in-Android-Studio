@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".storage.Gallery"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:background="?attr/colorPrimaryContainer">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvPrivatePhotos"
@@ -14,23 +15,10 @@
         android:background="@drawable/rv_border_green"
         android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/ivTest"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@drawable/rv_border"
-        android:padding="5dp"
-        android:layout_marginTop="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/ibTakePhoto"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.157"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvPrivatePhotos"
-        app:layout_constraintVertical_bias="0.0"/>
-    <!--
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSharedPhotos"
         android:layout_width="match_parent"
@@ -44,22 +32,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rvPrivatePhotos"
         app:layout_constraintVertical_bias="0.0" />
-        -->
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch_private_public"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="13dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="106dp"
-        android:layout_marginTop="5dp"
         android:text="Shared"
-        android:textStyle="bold"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ibTakePhoto"
-        app:layout_constraintTop_toBottomOf="@+id/ivTest"
+        app:layout_constraintTop_toBottomOf="@+id/rvSharedPhotos"
         app:layout_constraintVertical_bias="0.058" />
 
     <ImageButton

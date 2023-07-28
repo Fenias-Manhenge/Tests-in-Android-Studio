@@ -30,8 +30,13 @@ class Gallery : AppCompatActivity() {
 
     private lateinit var galleryAdapter: GalleryAdapter
 
-    private fun hasWritePermissionGranted() =
-        ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+    private fun hasCameraPermissionGranted() =
+        ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+
+    private val cameraPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()){ isGranted->
+        if (isGranted)
+            takePicture.launch(null)
+    }
 
     inner class RecyclerViewMarginPhoto: RecyclerView.ItemDecoration(){
         override fun getItemOffsets(
@@ -50,13 +55,13 @@ class Gallery : AppCompatActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    //@RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         binding.ibTakePhoto.setOnClickListener {
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !binding.switchPrivatePublic.isChecked) {
                 permissions.launch(
                     arrayOf(
                         android.Manifest.permission.READ_MEDIA_IMAGES,
@@ -65,13 +70,8 @@ class Gallery : AppCompatActivity() {
                         android.Manifest.permission.CAMERA
                     )
                 )
-            }else if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
-                permissions.launch(
-                    arrayOf(
-                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        android.Manifest.permission.READ_EXTERNAL_STORAGE
-                    )
-                )
+            }else {
+                cameraPermission.launch(android.Manifest.permission.CAMERA)
             }
         }
 
@@ -85,16 +85,19 @@ class Gallery : AppCompatActivity() {
     private val takePicture = registerForActivityResult(ActivityResultContracts.TakePicturePreview()){
         val isPrivate = binding.switchPrivatePublic.isChecked
 
-        //binding.ivTest.setImageBitmap(it)
-        if (isPrivate){
-            val isSavedSuccessfully = savePhotoToInternalStorage(UUID.randomUUID().toString(), it!!)
-            if (isSavedSuccessfully){
-                loadInternalStoragePhotosIntoRecyclerView()
-
-                Toast.makeText(this, "Saved Successfully", Toast.LENGTH_LONG).show()
-            } else
-                Toast.makeText(this, "Failed to Save", Toast.LENGTH_LONG).show()
+        val isSavedSuccessfully = when{
+            isPrivate -> savePhotoToInternalStorage(UUID.randomUUID().toString(), it!!)
+            hasCameraPermissionGranted() -> savePhotoToExternalStorage(UUID.randomUUID().toString(), it!!)
+            else -> false
         }
+
+        if (isPrivate)
+            loadInternalStoragePhotosIntoRecyclerView()
+
+        if (isSavedSuccessfully)
+            Toast.makeText(this, "Saved Successfully", Toast.LENGTH_LONG).show()
+        else
+            Toast.makeText(this, "Failed to Save", Toast.LENGTH_LONG).show()
     }
 
 
