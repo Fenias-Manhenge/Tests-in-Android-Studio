@@ -12,13 +12,12 @@ import android.provider.MediaStore
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.tests.databinding.GalleryBinding
-import com.example.tests.fundamentos.recycle_view.GalleryAdapter
+import com.example.tests.fundamentos.recycle_view.InternalStorageAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -28,7 +27,7 @@ import java.util.UUID
 class Gallery : AppCompatActivity() {
     private val binding: GalleryBinding by lazy { GalleryBinding.inflate(layoutInflater) }
 
-    private lateinit var galleryAdapter: GalleryAdapter
+    private lateinit var internalStorageAdapter: InternalStorageAdapter
 
     private fun hasCameraPermissionGranted() =
         ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
@@ -114,10 +113,10 @@ class Gallery : AppCompatActivity() {
 
     private fun loadInternalStoragePhotosIntoRecyclerView(){
         lifecycleScope.launch {
-            galleryAdapter = GalleryAdapter(loadPhotoFromInternalStorage())
+            internalStorageAdapter = InternalStorageAdapter(loadPhotoFromInternalStorage())
 
             binding.rvPrivatePhotos.apply {
-                this.adapter = galleryAdapter
+                this.adapter = internalStorageAdapter
                 layoutManager = StaggeredGridLayoutManager(3, RecyclerView.VERTICAL)
                 addItemDecoration(RecyclerViewMarginPhoto())
             }

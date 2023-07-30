@@ -4,15 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.cardview.widget.CardView
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.tests.R
 import com.example.tests.storage.InternalStoragePhoto
-import java.net.InterfaceAddress
 
-class GalleryAdapter(var dataGallery: List<InternalStoragePhoto>): RecyclerView.Adapter<GalleryAdapter.GalleryViewHolder>() {
+class InternalStorageAdapter(var dataGallery: List<InternalStoragePhoto>): RecyclerView.Adapter<InternalStorageAdapter.GalleryViewHolder>() {
 
     inner class GalleryViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
