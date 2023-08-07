@@ -1,5 +1,6 @@
 package com.example.tests.storage
 
+import android.content.ContentUris
 import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -17,17 +18,20 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.tests.databinding.GalleryBinding
+import com.example.tests.fundamentos.recycle_view.ExternalStorageAdapter
 import com.example.tests.fundamentos.recycle_view.InternalStorageAdapter
+import com.example.tests.fundamentos.recycle_view.OnItemClickListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.util.UUID
 
-class Gallery : AppCompatActivity() {
+class Gallery : AppCompatActivity(), OnItemClickListener {
     private val binding: GalleryBinding by lazy { GalleryBinding.inflate(layoutInflater) }
 
     private lateinit var internalStorageAdapter: InternalStorageAdapter
+    private lateinit var externalStorageAdapter: ExternalStorageAdapter
 
     private fun hasCameraPermissionGranted() =
         ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
@@ -75,6 +79,7 @@ class Gallery : AppCompatActivity() {
         }
 
         loadInternalStoragePhotosIntoRecyclerView()
+        loadExternalStoragePhotoIntoRecyclerView()
     }
 
     /*
@@ -92,6 +97,8 @@ class Gallery : AppCompatActivity() {
 
         if (isPrivate)
             loadInternalStoragePhotosIntoRecyclerView()
+        else
+            loadExternalStoragePhotoIntoRecyclerView()
 
         if (isSavedSuccessfully)
             Toast.makeText(this, "Saved Successfully", Toast.LENGTH_LONG).show()
@@ -118,6 +125,18 @@ class Gallery : AppCompatActivity() {
             binding.rvPrivatePhotos.apply {
                 this.adapter = internalStorageAdapter
                 layoutManager = StaggeredGridLayoutManager(3, RecyclerView.VERTICAL)
+                addItemDecoration(RecyclerViewMarginPhoto())
+            }
+        }
+    }
+
+    private fun loadExternalStoragePhotoIntoRecyclerView(){
+        lifecycleScope.launch {
+            externalStorageAdapter = ExternalStorageAdapter(loadExternalPhotos())
+
+            binding.rvSharedPhotos.apply {
+                this.adapter = externalStorageAdapter
+                layoutManager = StaggeredGridLayoutManager(3,RecyclerView.VERTICAL)
                 addItemDecoration(RecyclerViewMarginPhoto())
             }
         }
@@ -185,4 +204,59 @@ class Gallery : AppCompatActivity() {
             false
         }
     }
+
+    private suspend fun loadExternalPhotos(): MutableList<ExternalStorage> {
+        return withContext(Dispatchers.IO){
+            val collection = sdk29AndUp {
+                MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL)
+            }?: MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+
+            val projection = arrayOf(
+                MediaStore.Images.Media._ID,
+                MediaStore.Images.Media.DISPLAY_NAME,
+                MediaStore.Images.Media.WIDTH,
+                MediaStore.Images.Media.HEIGHT
+            )
+
+            val photos = mutableListOf<ExternalStorage>()
+
+            contentResolver.query(
+                collection,
+                projection,
+                null,
+                null,
+                "${MediaStore.Images.Media._ID} DESC"
+            )?.use {
+                val idColumn = it.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
+                val displayNameColumn = it.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME)
+                val widthColumn = it.getColumnIndexOrThrow(MediaStore.Images.Media.WIDTH)
+                val heightColumn = it.getColumnIndexOrThrow(MediaStore.Images.Media.HEIGHT)
+
+                while (it.moveToNext()){
+                    val id = it.getLong(idColumn)
+                    val displayName = it.getString(displayNameColumn)
+                    val width = it.getInt(widthColumn)
+                    val height = it.getInt(heightColumn)
+                    val contentUris = ContentUris.withAppendedId(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id
+                    )
+                    photos.add(ExternalStorage(id, displayName, width, height, contentUris))
+                }
+                photos
+            }?: mutableListOf()
+        }
+    }
+
+    fun deleteExternalImage(position: Int){
+        externalStorageAdapter.deleteImage(position)
+    }
+
+    override fun onImageClicked(position: Int) {
+        lifecycleScope.launch {
+            //val clickedImage = loadExternalPhotos()[position]
+            //deletePhotoFromInternalStorage(clickedImage.name)
+            Toast.makeText(this@Gallery, "Clicked image: $position", Toast.LENGTH_LONG).show()
+        }
+    }
+
 }

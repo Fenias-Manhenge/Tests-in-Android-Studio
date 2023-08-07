@@ -10,7 +10,9 @@ import com.example.tests.storage.InternalStoragePhoto
 
 class InternalStorageAdapter(var dataGallery: List<InternalStoragePhoto>): RecyclerView.Adapter<InternalStorageAdapter.GalleryViewHolder>() {
 
-    inner class GalleryViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+    inner class GalleryViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+        val photo: ImageView = itemView.findViewById(R.id.ivPhotoTest)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GalleryViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.gallery_item, parent, false)
@@ -19,16 +21,9 @@ class InternalStorageAdapter(var dataGallery: List<InternalStoragePhoto>): Recyc
 
     override fun onBindViewHolder(holder: GalleryViewHolder, position: Int) {
         holder.itemView.apply {
-            val photo = dataGallery[position].bitmap
-            val imageView= findViewById<ImageView>(R.id.ivPhotoTest)
-            imageView.setImageBitmap(photo)
+            val data = dataGallery[position].bitmap
+            holder.photo.setImageBitmap(data)
         }
-
-//        holder.itemView.apply {
-//            val ivPhoto = findViewById<ImageView>(R.id.ivPhoto)
-//            val image = dataGallery[position].fileName
-//            Glide.with(this.context).load(image).into(ivPhoto)
-//        }
     }
 
     override fun getItemCount(): Int {
