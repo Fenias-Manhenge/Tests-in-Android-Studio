@@ -10,13 +10,19 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.ContextMenu
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.tests.R
 import com.example.tests.databinding.GalleryBinding
 import com.example.tests.fundamentos.recycle_view.ExternalStorageAdapter
 import com.example.tests.fundamentos.recycle_view.InternalStorageAdapter
@@ -78,9 +84,37 @@ class Gallery : AppCompatActivity(), OnItemClickListener {
             }
         }
 
-        loadInternalStoragePhotosIntoRecyclerView()
-        loadExternalStoragePhotoIntoRecyclerView()
+        lifecycleScope.launch {
+            loadInternalStoragePhotosIntoRecyclerView()
+            loadExternalStoragePhotoIntoRecyclerView()
+        }
+
+        val ivLayout = LayoutInflater.from(this).inflate(R.layout.gallery_item, null)
+        ivLayout.findViewById<ImageView>(R.id.ivPhotoTest)
+        registerForContextMenu(ivLayout)
     }
+
+    override fun onCreateContextMenu(
+        menu: ContextMenu?,
+        v: View?,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+
+        menu?.apply {
+            add(R.string.share).setOnMenuItemClickListener {
+                Toast.makeText(this@Gallery, "Shared", Toast.LENGTH_LONG).show()
+                true
+            }
+
+            add(R.string.delete).setOnMenuItemClickListener {
+                Toast.makeText(this@Gallery, "Deleted", Toast.LENGTH_LONG).show()
+                true
+            }
+        }
+    }
+
+
 
     /*
         Permissions
@@ -95,10 +129,12 @@ class Gallery : AppCompatActivity(), OnItemClickListener {
             else -> false
         }
 
-        if (isPrivate)
-            loadInternalStoragePhotosIntoRecyclerView()
-        else
-            loadExternalStoragePhotoIntoRecyclerView()
+        lifecycleScope.launch {
+            if (isPrivate)
+                loadInternalStoragePhotosIntoRecyclerView()
+            else
+                loadExternalStoragePhotoIntoRecyclerView()
+        }
 
         if (isSavedSuccessfully)
             Toast.makeText(this, "Saved Successfully", Toast.LENGTH_LONG).show()
@@ -118,14 +154,17 @@ class Gallery : AppCompatActivity(), OnItemClickListener {
         }
     }
 
-    private fun loadInternalStoragePhotosIntoRecyclerView(){
-        lifecycleScope.launch {
-            internalStorageAdapter = InternalStorageAdapter(loadPhotoFromInternalStorage())
+    private suspend fun loadInternalStoragePhotosIntoRecyclerView(){
+        withContext(Dispatchers.IO) {
+            lifecycleScope.launch {
 
-            binding.rvPrivatePhotos.apply {
-                this.adapter = internalStorageAdapter
-                layoutManager = StaggeredGridLayoutManager(3, RecyclerView.VERTICAL)
-                addItemDecoration(RecyclerViewMarginPhoto())
+                internalStorageAdapter = InternalStorageAdapter(loadPhotoFromInternalStorage(), this@Gallery, this@Gallery)
+
+                binding.rvPrivatePhotos.apply {
+                    this.adapter = internalStorageAdapter
+                    layoutManager = StaggeredGridLayoutManager(3, RecyclerView.VERTICAL)
+                    addItemDecoration(RecyclerViewMarginPhoto())
+                }
             }
         }
     }
@@ -155,14 +194,14 @@ class Gallery : AppCompatActivity(), OnItemClickListener {
         }
     }
 
-    private suspend fun loadPhotoFromInternalStorage(): List<InternalStoragePhoto>{
+    private suspend fun loadPhotoFromInternalStorage(): MutableList<InternalStoragePhoto>{
         return withContext(Dispatchers.IO){
             val files = filesDir.listFiles()
             files?.filter { it.canRead() && it.isFile && it.path.endsWith(".jpg") }?.map { it1->
                 val bytes = it1.readBytes()
                 val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
                 InternalStoragePhoto(it1.name, bitmap)
-            } ?: listOf()
+            }?.toMutableList() ?: mutableListOf()
         }
     }
 
@@ -253,10 +292,14 @@ class Gallery : AppCompatActivity(), OnItemClickListener {
 
     override fun onImageClicked(position: Int) {
         lifecycleScope.launch {
-            //val clickedImage = loadExternalPhotos()[position]
-            //deletePhotoFromInternalStorage(clickedImage.name)
-            Toast.makeText(this@Gallery, "Clicked image: $position", Toast.LENGTH_LONG).show()
+            val clickedImage = loadPhotoFromInternalStorage()[position]
+            val isDeleted = deletePhotoFromInternalStorage(clickedImage.fileName)
+            if (isDeleted) {
+                Toast.makeText(this@Gallery, "Deleted", Toast.LENGTH_LONG).show()
+            }else
+                Toast.makeText(this@Gallery, "Impossible to delete", Toast.LENGTH_LONG).show()
         }
     }
+
 
 }

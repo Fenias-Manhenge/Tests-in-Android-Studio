@@ -10,11 +10,7 @@ import com.example.tests.R
 import com.example.tests.storage.ExternalStorage
 import com.example.tests.storage.Gallery
 
-interface OnItemClickListener{
-    fun onImageClicked(position: Int)
-}
-
-class ExternalStorageAdapter(var externalDataGallery: MutableList<ExternalStorage>):RecyclerView.Adapter<ExternalStorageAdapter.GalleryViewHolder>() {
+class ExternalStorageAdapter(private var externalDataGallery: MutableList<ExternalStorage>):RecyclerView.Adapter<ExternalStorageAdapter.GalleryViewHolder>() {
 
     private var onItemClickListener: OnItemClickListener? = null
     inner class GalleryViewHolder(itemViewHolder: View): RecyclerView.ViewHolder(itemViewHolder){
