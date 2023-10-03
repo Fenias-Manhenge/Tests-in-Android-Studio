@@ -1,18 +1,15 @@
-package com.example.tests
+package com.example.tests.components
 
 import android.app.Dialog
-import android.content.Context
-import android.database.Cursor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
+import com.example.tests.R
 import com.example.tests.databinding.ActivityDialogsBinding
 import com.example.tests.databinding.CustomDialogBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.SnackbarLayout
-import com.google.android.material.snackbar.SnackbarContentLayout
 
 class Dialogs : AppCompatActivity() {
 
@@ -30,6 +27,7 @@ class Dialogs : AppCompatActivity() {
                     val layout = customSnackbar.view as SnackbarLayout
                     val bind: CustomDialogBinding = CustomDialogBinding.inflate(layoutInflater)
                     layout.setPadding(0)
+                    val onErrorAction = 12
                     layout.addView(bind.root)
                     customSnackbar.show()
                 }

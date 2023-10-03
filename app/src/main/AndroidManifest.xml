@@ -25,7 +25,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".storage.DynamicColor"
+        android:name=".DynamicColor"
         tools:targetApi="33">
         <activity
             android:name=".components.Slider"
@@ -73,7 +73,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Dialogs"
+            android:name=".components.Dialogs"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -108,6 +108,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".mastering_layouts.ConstraintLayoutMaster"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <provider
+            android:authorities="com.example.tests.fileprovider"
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/path"
+                />
+        </provider>
+
     </application>
 
 </manifest>

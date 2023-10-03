@@ -2,6 +2,15 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="ConstraintLayout">
+        <State />
+      </entry>
+      <entry key="ConstraintLayoutMaster">
+        <State />
+      </entry>
+      <entry key="Dialogs">
+        <State />
+      </entry>
       <entry key="Gallery">
         <State>
           <targetSelectedWithDropDown>

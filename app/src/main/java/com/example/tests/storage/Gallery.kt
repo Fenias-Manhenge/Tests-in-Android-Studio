@@ -2,10 +2,12 @@ package com.example.tests.storage
 
 import android.content.ContentUris
 import android.content.ContentValues
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Rect
+import android.media.MediaScannerConnection
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -30,6 +32,7 @@ import com.example.tests.fundamentos.recycle_view.OnItemClickListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.io.IOException
 import java.util.UUID
 
@@ -113,9 +116,6 @@ class Gallery : AppCompatActivity(), OnItemClickListener {
             }
         }
     }
-
-
-
     /*
         Permissions
      */
@@ -141,7 +141,6 @@ class Gallery : AppCompatActivity(), OnItemClickListener {
         else
             Toast.makeText(this, "Failed to Save", Toast.LENGTH_LONG).show()
     }
-
 
     private val permissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){ permission ->
         permission.entries.forEach {
@@ -171,7 +170,7 @@ class Gallery : AppCompatActivity(), OnItemClickListener {
 
     private fun loadExternalStoragePhotoIntoRecyclerView(){
         lifecycleScope.launch {
-            externalStorageAdapter = ExternalStorageAdapter(loadExternalPhotos())
+            externalStorageAdapter = ExternalStorageAdapter(loadExternalPhotos(), this@Gallery, this@Gallery)
 
             binding.rvSharedPhotos.apply {
                 this.adapter = externalStorageAdapter
@@ -286,8 +285,26 @@ class Gallery : AppCompatActivity(), OnItemClickListener {
         }
     }
 
-    fun deleteExternalImage(position: Int){
-        externalStorageAdapter.deleteImage(position)
+    override fun showUri(position: Int) {
+        lifecycleScope.launch {
+            val uri = loadExternalPhotos()[position].contentUri.toString()
+
+            Toast.makeText(this@Gallery, uri, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun sharePhoto(position: Int) {
+        lifecycleScope.launch {
+            val path = loadExternalPhotos()[position].contentUri
+
+            val share = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_STREAM, path)
+                putExtra(Intent.EXTRA_SUBJECT, "Receive the Photo")
+                type = "image/*"
+            }
+            startActivity(Intent.createChooser(share, "Share"))
+        }
     }
 
     override fun onImageClicked(position: Int) {
@@ -300,6 +317,4 @@ class Gallery : AppCompatActivity(), OnItemClickListener {
                 Toast.makeText(this@Gallery, "Impossible to delete", Toast.LENGTH_LONG).show()
         }
     }
-
-
 }

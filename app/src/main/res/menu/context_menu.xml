@@ -11,4 +11,9 @@
         android:title="@string/delete"
         android:icon="@drawable/delete"
         />
+
+    <item
+        android:id="@+id/option_3"
+        android:title="Uri"
+        />
 </menu>

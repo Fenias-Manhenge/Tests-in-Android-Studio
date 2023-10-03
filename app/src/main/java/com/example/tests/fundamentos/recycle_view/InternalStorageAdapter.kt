@@ -37,8 +37,8 @@ class InternalStorageAdapter(
             popUpM.setOnMenuItemClickListener {
                 when(it.itemId){
                     R.id.option_1 ->{
-
-                        Toast.makeText(c, "Shared", Toast.LENGTH_LONG).show()
+                        listener.sharePhoto(adapterPosition)
+                        //Toast.makeText(c, "Shared", Toast.LENGTH_LONG).show()
                         true
                     }
                     R.id.option_2->{

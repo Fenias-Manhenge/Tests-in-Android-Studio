@@ -1,4 +1,4 @@
-package com.example.tests.storage
+package com.example.tests
 
 import android.app.Application
 import com.google.android.material.color.DynamicColors
