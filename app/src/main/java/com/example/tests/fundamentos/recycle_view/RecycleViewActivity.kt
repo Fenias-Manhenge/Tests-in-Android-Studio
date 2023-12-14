@@ -1,18 +1,17 @@
 package com.example.tests.fundamentos.recycle_view
 
 import android.graphics.Rect
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.tests.databinding.RecycleViewBinding
 
 class RecycleViewActivity : AppCompatActivity() {
     private lateinit var binding: RecycleViewBinding
 
-    lateinit var todo: TodoData
+    private lateinit var todo: TodoData
     inner class RecycleViewMargin : RecyclerView.ItemDecoration(){
         override fun getItemOffsets(
             outRect: Rect,

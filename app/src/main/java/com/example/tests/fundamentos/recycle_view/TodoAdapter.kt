@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tests.R
 
-class TodoAdapter(var datas: List<TodoData>): RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
+class TodoAdapter(private var datas: List<TodoData>): RecyclerView.Adapter<TodoAdapter.TodoViewHolder>() {
     
     inner class TodoViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 

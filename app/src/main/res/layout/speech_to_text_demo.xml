@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fundamentos.everything.SpeechToTextDemo">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/etText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Introduza qlqr texto"
+        android:textSize="22sp"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnSpeech"
+        app:layout_constraintEnd_toEndOf="@+id/btnSpeech"
+        app:layout_constraintStart_toStartOf="@+id/btnSpeech" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSpeech"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click to Speech Text"
+        android:textSize="22sp"
+        android:layout_marginBottom="290dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <Button
+        android:id="@+id/btnMediaPlayer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Media Player"
+        android:textSize="@dimen/text_size"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/btnSpeech"
+        app:layout_constraintStart_toStartOf="@+id/btnSpeech"
+        app:layout_constraintTop_toBottomOf="@+id/btnSpeech" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
