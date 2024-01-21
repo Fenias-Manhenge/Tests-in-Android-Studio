@@ -28,6 +28,15 @@
         android:theme="@style/AppTheme"
         tools:targetApi="33">
         <activity
+            android:name=".components.TextFieldDemo"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".fundamentos.everything.SpeechToTextDemo"
             android:exported="true">
             <intent-filter>

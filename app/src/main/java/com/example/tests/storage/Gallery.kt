@@ -7,19 +7,16 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Rect
-import android.media.MediaScannerConnection
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.ContextMenu
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -32,7 +29,6 @@ import com.example.tests.fundamentos.recycle_view.OnItemClickListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
 import java.io.IOException
 import java.util.UUID
 
@@ -232,7 +228,7 @@ class Gallery : AppCompatActivity(), OnItemClickListener {
         return try {
             contentResolver.insert(imageCollection, contentValues).also {
                 contentResolver.openOutputStream(it!!).use { os->
-                    if (!bitmap.compress(Bitmap.CompressFormat.JPEG, 95, os))
+                    if (!bitmap.compress(Bitmap.CompressFormat.JPEG, 95, os!!))
                         throw IOException("Could not save Image To External Storage")
                 }
             }?:false
