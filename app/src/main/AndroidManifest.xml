@@ -28,6 +28,15 @@
         android:theme="@style/AppTheme"
         tools:targetApi="33">
         <activity
+            android:name=".room_database.RoomDemo"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".components.TextFieldDemo"
             android:exported="true">
             <intent-filter>
@@ -82,7 +91,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ImplicitIntent"
+            android:name=".fundamentos.ImplicitIntent"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -100,7 +109,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Permissions"
+            android:name=".fundamentos.Permissions"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

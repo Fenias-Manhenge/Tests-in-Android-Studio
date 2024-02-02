@@ -1,4 +1,4 @@
-package com.example.tests
+package com.example.tests.fundamentos
 
 import android.content.pm.PackageManager
 import android.os.Bundle

@@ -1,4 +1,4 @@
-package com.example.tests
+package com.example.tests.fundamentos
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.example.tests.R
 import com.example.tests.databinding.ImplicitIntentBinding
 import com.google.android.material.snackbar.Snackbar
 
