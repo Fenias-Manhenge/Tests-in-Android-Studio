@@ -8,7 +8,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.tests.ApplicationTest
 import com.example.tests.R
 import com.example.tests.databinding.RoomDemoBinding
@@ -17,6 +16,7 @@ import kotlinx.coroutines.launch
 class RoomDemo : AppCompatActivity() {
 
     private val binding by lazy { RoomDemoBinding.inflate(layoutInflater) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -33,9 +33,22 @@ class RoomDemo : AppCompatActivity() {
             addRecord(employeeDao)
         }
 
-        binding.rvRecords.layoutManager = LinearLayoutManager(this)
+        lifecycleScope.launch {
+            employeeDao.fetchAllEmployees().collect{
+                setupListDataIntoRecyclerView(it)
+            }
+        }
+    }
 
-        //binding.rvRecords.adapter = RecordsAdapter(employeeDao.fetchAllEmployees())
+    private fun setupListDataIntoRecyclerView(
+        employeeList: List<EmployeeEntity>
+    ){
+        if(employeeList.isNotEmpty()){
+            binding.rvRecords.apply {
+                layoutManager = LinearLayoutManager(this@RoomDemo)
+                adapter = RecordsAdapter(employeeList)
+            }
+        }
     }
 
     private fun addRecord(employeeDao: EmployeeDao){
