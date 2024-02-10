@@ -46,7 +46,7 @@ class RoomDemo : AppCompatActivity() {
         if(employeeList.isNotEmpty()){
             binding.rvRecords.apply {
                 layoutManager = LinearLayoutManager(this@RoomDemo)
-                adapter = RecordsAdapter(employeeList)
+                adapter = RecordsAdapter(employeeList, this@RoomDemo)
             }
         }
     }
