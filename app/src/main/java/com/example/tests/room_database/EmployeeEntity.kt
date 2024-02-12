@@ -10,5 +10,5 @@ data class EmployeeEntity(
     @ColumnInfo(name = "Name")
     val name: String = "",
     @ColumnInfo(name = "email-ID")
-    val email: String
+    val email: String = ""
 )
