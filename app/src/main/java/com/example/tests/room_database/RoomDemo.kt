@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tests.ApplicationTest
 import com.example.tests.R
 import com.example.tests.databinding.RoomDemoBinding
+import com.example.tests.databinding.UpdateDialogBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
 class RoomDemo : AppCompatActivity() {
@@ -65,4 +67,35 @@ class RoomDemo : AppCompatActivity() {
         }else
             Toast.makeText(this@RoomDemo, "Name or email can not be blank", Toast.LENGTH_SHORT).show()
     }
+
+    private fun updateRecord(id: Int, employeeDao: EmployeeDao){
+        val binding = UpdateDialogBinding.inflate(layoutInflater)
+
+        val updateDialog = MaterialAlertDialogBuilder(this)
+            .setView(binding.root)
+            .setCancelable(false)
+            .create()
+
+        lifecycleScope.launch {
+            employeeDao.fetchEmployeeByID(id).collect {
+                binding.etName.setText(it.name)
+                binding.etEMail.setText(it.email)
+            }
+        }
+
+        binding.btnUpdate.setOnClickListener {
+            val name = binding.etName.text.toString()
+            val email = binding.etEMail.text.toString()
+
+            if (name.isNotEmpty() && email.isNotEmpty())
+                lifecycleScope.launch {
+                    employeeDao.insert(EmployeeEntity(id, name, email))
+                    Toast.makeText(this@RoomDemo, "Record updated", Toast.LENGTH_SHORT).show()
+                }
+
+            updateDialog.dismiss()
+        }
+        updateDialog.show()
+    }
+
 }
