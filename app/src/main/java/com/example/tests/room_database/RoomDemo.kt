@@ -85,8 +85,6 @@ class RoomDemo : AppCompatActivity() {
             .setCancelable(false)
             .create()
 
-        updateDialog.show()
-
         lifecycleScope.launch {
             employeeDao.fetchEmployeeByID(id).collect {
                 binding.etName.setText(it.name)
@@ -109,4 +107,7 @@ class RoomDemo : AppCompatActivity() {
     }
 
     
+        updateDialog.show()
+    }
+
 }
