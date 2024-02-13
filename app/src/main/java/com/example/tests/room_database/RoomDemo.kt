@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -13,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tests.ApplicationTest
 import com.example.tests.R
 import com.example.tests.databinding.RoomDemoBinding
-import com.example.tests.databinding.UpdateDialogBinding
+import com.example.tests.databinding.RoomUpdateDialogBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
@@ -78,12 +77,14 @@ class RoomDemo : AppCompatActivity() {
     }
 
     private fun updateRecord(id: Int, employeeDao: EmployeeDao){
-        val binding = UpdateDialogBinding.inflate(layoutInflater)
+        val binding = RoomUpdateDialogBinding.inflate(layoutInflater)
 
         val updateDialog = MaterialAlertDialogBuilder(this)
             .setView(binding.root)
             .setCancelable(false)
             .create()
+
+        updateDialog.show()
 
         lifecycleScope.launch {
             employeeDao.fetchEmployeeByID(id).collect {
@@ -93,21 +94,40 @@ class RoomDemo : AppCompatActivity() {
         }
 
         binding.btnUpdate.setOnClickListener {
-            val name = binding.etName.text.toString()
-            val email = binding.etEMail.text.toString()
+            val name: String = binding.etName.text.toString()
+            val email: String = binding.etEMail.text.toString()
 
-            if (name.isNotEmpty() && email.isNotEmpty())
+            if (name.isNotEmpty() && email.isNotEmpty()) {
                 lifecycleScope.launch {
-                    employeeDao.insert(EmployeeEntity(id, name, email))
-                    Toast.makeText(this@RoomDemo, "Record updated", Toast.LENGTH_SHORT).show()
+                    employeeDao.update(EmployeeEntity(id, name, email))
+                    Toast.makeText(applicationContext, "Record updated", Toast.LENGTH_SHORT).show()
+                    updateDialog.dismiss()
                 }
+            }else
+                Toast.makeText(this@RoomDemo, "Name or email can not be blank", Toast.LENGTH_SHORT).show()
+        }
 
+        binding.btnCancel.setOnClickListener {
             updateDialog.dismiss()
         }
     }
 
-    
-        updateDialog.show()
+    private fun deleteRecord(id: Int, employeeDao: EmployeeDao){
+        MaterialAlertDialogBuilder(this)
+            .setCancelable(false)
+            .setIcon(ContextCompat.getDrawable(this, R.drawable.delete_30px))
+            .setTitle("Delete")
+            .setMessage("Are you sure you want to delete this?")
+            .setPositiveButton("Yes"){ dialog, _ ->
+                lifecycleScope.launch {
+                    employeeDao.delete(EmployeeEntity(id))
+                    Toast.makeText(this@RoomDemo, "Record Deleted", Toast.LENGTH_SHORT).show()
+                }
+                dialog.dismiss()
+            }
+            .setNegativeButton("No"){ dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
-
 }
