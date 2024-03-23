@@ -27,7 +27,6 @@ class Dialogs : AppCompatActivity() {
                     val layout = customSnackbar.view as SnackbarLayout
                     val bind: CustomDialogBinding = CustomDialogBinding.inflate(layoutInflater)
                     layout.setPadding(0)
-                    val onErrorAction = 12
                     layout.addView(bind.root)
                     customSnackbar.show()
                 }

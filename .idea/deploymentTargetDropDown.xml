@@ -2,9 +2,6 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="ConstraintLayout">
-        <State />
-      </entry>
       <entry key="ConstraintLayoutMaster">
         <State />
       </entry>
@@ -24,6 +21,9 @@
           <timeTargetWasSelectedWithDropDown value="2023-08-08T15:40:59.801480500Z" />
         </State>
       </entry>
+      <entry key="RoomDemo">
+        <State />
+      </entry>
       <entry key="SpeechToTextDemo">
         <State />
       </entry>
@@ -33,6 +33,7 @@
       <entry key="app">
         <State />
       </entry>
+      <entry />
     </value>
   </component>
 </project>
